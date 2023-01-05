@@ -24,16 +24,22 @@ export class AwsCdkPipelineStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const repo = new codecommit.Repository(this, 'Repository', {
-      repositoryName: repositoryName,
-    });
+    // const repo = new codecommit.Repository(this, 'Repository', {
+    //   repositoryName: repositoryName,
+    // });
 
     const devPipeline = new pipelines.CodePipeline(this, 'DevPipeline', {
       // クロスアカウントを利用する場合に必要です。
       crossAccountKeys: true,
       synth: new pipelines.CodeBuildStep('Synth', {
         // 事前に作成したレポジトリ名と、ConnectionのARNに置き換えてください。
-        input: pipelines.CodePipelineSource.codeCommit(repo, 'master'),
+        input: CodePipelineSource.connection(
+          "takuya-yone/aws-cdk-pipeline", // リポジトリがgithub.com/hoge/fugaなら、"hoge/fuga"
+          "main", // ブランチ名
+          {
+            connectionArn: "arn:aws:codestar-connections:ap-northeast-1:690701631846:connection/5b7e0bbf-51f9-40cd-ae92-8c0cfd70bd14",
+          }
+        ),
         commands: ['npm ci', 'npm run build', 'npx cdk synth -c stage=dev'],
       }),
     });
