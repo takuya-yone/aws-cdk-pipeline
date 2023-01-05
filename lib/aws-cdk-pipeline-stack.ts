@@ -40,7 +40,7 @@ export class AwsCdkPipelineStack extends cdk.Stack {
             connectionArn: "arn:aws:codestar-connections:ap-northeast-1:690701631846:connection/5b7e0bbf-51f9-40cd-ae92-8c0cfd70bd14",
           }
         ),
-        commands: ['npm ci', 'npm run build', 'npx cdk synth -c stage=dev'],
+        commands: ['yarn install --frozen-lockfile', 'yarn build', 'yarn cdk synth -c stage=dev'],
       }),
     });
 
