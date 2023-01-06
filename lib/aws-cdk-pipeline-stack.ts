@@ -61,7 +61,7 @@ export class AwsCdkPipelineStack extends cdk.Stack {
     devPipeline.addStage(
       new S3StackApplication(this, 'Prod', {
         env: {
-          account: '974310065491',
+          account: '690701631846',
           region: 'ap-northeast-1',
         },
       }),
