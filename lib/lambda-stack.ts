@@ -9,7 +9,6 @@ export class LambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-
     // const uuid = uuidv4();
 
     const lambda = new NodejsFunction(this, 'HelloWorld', {

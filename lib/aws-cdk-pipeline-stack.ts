@@ -43,6 +43,7 @@ export class AwsCdkPipelineStack extends cdk.Stack {
           'yarn cdk synth -c stage=dev',
         ],
       }),
+      dockerEnabledForSynth: true,
     });
 
     devPipeline.addStage(

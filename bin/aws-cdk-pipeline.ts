@@ -3,7 +3,6 @@ import 'source-map-support/register';
 import { AwsCdkPipelineStack } from '../lib/aws-cdk-pipeline-stack';
 import * as cdk from 'aws-cdk-lib';
 
-
 const app = new cdk.App();
 
 const envProd = { account: '974310065491', region: 'ap-northeast-1' };
