@@ -17,13 +17,12 @@ import * as pipelines from '@aws-cdk/pipelines';
 import * as s3 from '@aws-cdk/aws-s3';
 import { v4 as uuidv4 } from 'uuid';
 
-
 export class S3Stack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const bucket = new s3.Bucket(this, 'testBucket', {
-      bucketName: 'test-bucket-' + uuidv4()
+      bucketName: 'test-bucket-' + uuidv4(),
     });
- 
-  }}
+  }
+}

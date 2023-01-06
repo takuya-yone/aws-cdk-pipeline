@@ -2,7 +2,6 @@ import * as cdk from '@aws-cdk/core';
 
 import { S3Stack } from '../lib/s3-stack';
 
-
 import { Construct, Stage, Stack, StackProps, StageProps } from '@aws-cdk/core';
 import {
   CodePipeline,
@@ -34,38 +33,32 @@ export class AwsCdkPipelineStack extends cdk.Stack {
       synth: new pipelines.CodeBuildStep('Synth', {
         // 事前に作成したレポジトリ名と、ConnectionのARNに置き換えてください。
         input: CodePipelineSource.connection(
-          "takuya-yone/aws-cdk-pipeline", // リポジトリがgithub.com/hoge/fugaなら、"hoge/fuga"
-          "main", // ブランチ名
+          'takuya-yone/aws-cdk-pipeline', // リポジトリがgithub.com/hoge/fugaなら、"hoge/fuga"
+          'main', // ブランチ名
           {
-            connectionArn: "arn:aws:codestar-connections:ap-northeast-1:690701631846:connection/5b7e0bbf-51f9-40cd-ae92-8c0cfd70bd14",
+            connectionArn:
+              'arn:aws:codestar-connections:ap-northeast-1:690701631846:connection/5b7e0bbf-51f9-40cd-ae92-8c0cfd70bd14',
           }
         ),
-        commands: ['yarn install --frozen-lockfile', 'yarn build', 'yarn cdk synth -c stage=dev'],
+        commands: [
+          'yarn install --frozen-lockfile',
+          'yarn build',
+          'yarn cdk synth -c stage=dev',
+        ],
       }),
     });
 
-    // 任意のアカウントとリージョンで、必要な回数だけ`addStage`を呼び出します。
     devPipeline.addStage(
       new MyApplication(this, 'Dev', {
         env: {
           account: '690701631846',
           region: 'ap-northeast-1',
         },
-      })
+      }),
+      {
+        pre: [new pipelines.ManualApprovalStep('DevApprove')],
+      }
     );
-
-
-    devPipeline.addStage(
-      new MyApplication(this, 'DevApprove', {
-        env: {
-          account: '690701631846',
-          region: 'ap-northeast-1',
-        },
-      }), {
-      pre: [
-        new pipelines.ManualApprovalStep('PromoteToProd'),
-      ],
-    });
 
     devPipeline.addStage(
       new MyApplication(this, 'Prod', {
@@ -73,10 +66,11 @@ export class AwsCdkPipelineStack extends cdk.Stack {
           account: '974310065491',
           region: 'ap-northeast-1',
         },
-      })
+      }),
+      {
+        pre: [new pipelines.ManualApprovalStep('ProdApprove')],
+      }
     );
-
-
 
     // const prodPipeline = new pipelines.CodePipeline(this, 'ProdPipeline', {
     //   // クロスアカウントを利用する場合に必要です。
