@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 
 import { S3Stack } from '../lib/s3-stack';
+import { LambdaStack } from '../lib/lambda-stack';
 
 import { Construct, Stage, Stack, StackProps, StageProps } from '@aws-cdk/core';
 import {
@@ -49,7 +50,7 @@ export class AwsCdkPipelineStack extends cdk.Stack {
     });
 
     devPipeline.addStage(
-      new MyApplication(this, 'Dev', {
+      new S3StackApplication(this, 'Dev', {
         env: {
           account: '690701631846',
           region: 'ap-northeast-1',
@@ -61,7 +62,7 @@ export class AwsCdkPipelineStack extends cdk.Stack {
     );
 
     devPipeline.addStage(
-      new MyApplication(this, 'Prod', {
+      new S3StackApplication(this, 'Prod', {
         env: {
           account: '974310065491',
           region: 'ap-northeast-1',
@@ -84,7 +85,7 @@ export class AwsCdkPipelineStack extends cdk.Stack {
 
     // // 任意のアカウントとリージョンで、必要な回数だけ`addStage`を呼び出します。
     // prodPipeline.addStage(
-    //   new MyApplication(this, 'Prod', {
+    //   new S3StackApplication(this, 'Prod', {
     //     env: {
     //       account: '974310065491',
     //       region: 'ap-northeast-1',
@@ -94,14 +95,19 @@ export class AwsCdkPipelineStack extends cdk.Stack {
   }
 }
 
-/**
- * `Stage`をextendsして`MyApplication`を定義します。
- * `MyApplication`は1つ以上のStackで構成されます。
- */
-export class MyApplication extends Stage {
+export class S3StackApplication extends Stage {
   constructor(scope: Construct, id: string, props?: StageProps) {
     super(scope, id, props);
 
     new S3Stack(this, 'S3Stack');
+    new LambdaStack(this, 'LambdaStack');
   }
 }
+
+// export class LambdaStackApplication extends Stage {
+//   constructor(scope: Construct, id: string, props?: StageProps) {
+//     super(scope, id, props);
+
+//     new LambdaStack(this, 'LambdaStack');
+//   }
+// }
