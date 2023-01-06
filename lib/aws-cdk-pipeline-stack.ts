@@ -53,6 +53,14 @@ export class AwsCdkPipelineStack extends cdk.Stack {
         },
       })
     );
+
+
+    devPipeline.addStage(this,'Dev', {
+      pre: [
+        new pipelines.ManualApprovalStep('PromoteToProd'),
+      ],
+    });
+
     devPipeline.addStage(
       new MyApplication(this, 'Prod', {
         env: {
