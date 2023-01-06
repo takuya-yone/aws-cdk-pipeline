@@ -55,7 +55,13 @@ export class AwsCdkPipelineStack extends cdk.Stack {
     );
 
 
-    devPipeline.addStage(this,'Dev', {
+    devPipeline.addStage(
+      new MyApplication(this, 'DevApprove', {
+        env: {
+          account: '690701631846',
+          region: 'ap-northeast-1',
+        },
+      }), {
       pre: [
         new pipelines.ManualApprovalStep('PromoteToProd'),
       ],
