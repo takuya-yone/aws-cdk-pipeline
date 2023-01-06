@@ -1,27 +1,23 @@
-import * as cdk from '@aws-cdk/core';
+// import { Stack, StackProps, Stage, StageProps } from 'aws-cdk-lib';
+import * as cdk from 'aws-cdk-lib';
+
+import { Construct } from 'constructs';
 
 import { S3Stack } from '../lib/s3-stack';
 import { LambdaStack } from '../lib/lambda-stack';
 
-import { Construct, Stage, Stack, StackProps, StageProps } from '@aws-cdk/core';
 import {
   CodePipeline,
   CodePipelineSource,
   ShellStep,
-} from '@aws-cdk/pipelines';
+} from 'aws-cdk-lib/pipelines';
 
-import * as lambda from '@aws-cdk/aws-lambda';
-// import * as codepipeline from '@aws-cdk/aws-codepipeline';
-import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import * as codebuild from '@aws-cdk/aws-codebuild';
-import * as iam from '@aws-cdk/aws-iam';
-import * as codecommit from '@aws-cdk/aws-codecommit';
-import * as pipelines from '@aws-cdk/pipelines';
+import * as pipelines from 'aws-cdk-lib/pipelines';
 
 const repositoryName: string = 'aws-cdk-pipeline-stack-repo';
 
 export class AwsCdkPipelineStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // const repo = new codecommit.Repository(this, 'Repository', {
@@ -95,8 +91,8 @@ export class AwsCdkPipelineStack extends cdk.Stack {
   }
 }
 
-export class S3StackApplication extends Stage {
-  constructor(scope: Construct, id: string, props?: StageProps) {
+export class S3StackApplication extends cdk.Stage {
+  constructor(scope: Construct, id: string, props?: cdk.StageProps) {
     super(scope, id, props);
 
     new S3Stack(this, 'S3Stack');
